@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <p id="json"></p>
+
+    <script src="portsInfo.js"></script>
+    <script>
+
+        output = ""
+
+
+        for (var i in portsInfo.features) {
+
+            var lat = decToDeg(portsInfo.features[i].properties.latitude)
+
+            portsInfo.features[i].properties.DMSlat = lat
+
+            var long = decToDeg(portsInfo.features[i].properties.longitude)
+
+            portsInfo.features[i].properties.DMSlong = long
+
+            delete portsInfo.features[i].type
+            delete portsInfo.features[i].id
+            delete portsInfo.features[i].geometry
+            delete portsInfo.features[i].geometry_name
+            delete portsInfo.features[i].properties.status
+            delete portsInfo.features[i].properties.maxdepth
+            delete portsInfo.features[i].properties.maxlength
+            delete portsInfo.features[i].properties.annualcapacitymt
+            delete portsInfo.features[i].properties.humuse
+            delete portsInfo.features[i].properties.locprecision
+            delete portsInfo.features[i].properties.iso3
+            delete portsInfo.features[i].properties.iso3_op
+            delete portsInfo.features[i].properties.lastcheckdate
+            delete portsInfo.features[i].properties.remarks
+            delete portsInfo.features[i].properties.url_lca
+            delete portsInfo.features[i].properties.source
+            delete portsInfo.features[i].properties.createdate
+            delete portsInfo.features[i].properties.updatedate
+            delete portsInfo.features[i].properties.gdb_geomattr_data
+
+            //console.log(i + " => " + portsInfo.features[i].properties.latitude)
+            output += (JSON.stringify(portsInfo.features[i].properties) + ",");
+            //output = portsInfo
+        }
+        console.log(output);
+
+        function decToDeg(deg) {
+            var d = Math.floor(deg);
+            var minfloat = (deg - d) * 60;
+            var m = Math.floor(minfloat);
+            var secfloat = (minfloat - m) * 60;
+            var s = Math.round(secfloat);
+            // After rounding, the seconds might become 60. These two
+            // if-tests are not necessary if no rounding is done.
+            if (s == 60) {
+                m++;
+                s = 0;
+            }
+            if (m == 60) {
+                d++;
+                m = 0;
+            }
+            return ("" + d + "°" + m + "'" + s + "''");
+        }
+    </script>
+
+</body>
+
+</html>
